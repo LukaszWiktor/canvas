@@ -75,34 +75,40 @@
             })
         });
 
-        canvas.addEventListener("mousedown", function (e) {
-            sx = e.clientX;
-            sy = e.clientY;
-        });
-
-        canvas.addEventListener("mousemove", function (e) {
-            if (!sx || !sy) {
-                return;
-            }
-            const distance = Math.sqrt(Math.pow(sx - e.clientX, 2) + Math.pow(sy - e.clientY, 2));
-            if (distance > 25) {
-                circles.push({
-                    x: e.clientX,
-                    y: e.clientY,
-                    r: 1,
-                    rd: 1,
-                    maxr: 50,
-                    age: 0
-                });
+        for (const startEvent of ["mousedown", "touchstart"]) {
+            canvas.addEventListener(startEvent, function (e) {
                 sx = e.clientX;
                 sy = e.clientY;
-            }
-        })
+            });
+        }
 
-        canvas.addEventListener("mouseup", function (e) {
-            sx = null;
-            sy = null;
-        })
+        for (const moveEvent of ["mousemove", "touchmove"]) {
+            canvas.addEventListener(moveEvent, function (e) {
+                if (!sx || !sy) {
+                    return;
+                }
+                const distance = Math.sqrt(Math.pow(sx - e.clientX, 2) + Math.pow(sy - e.clientY, 2));
+                if (distance > 25) {
+                    circles.push({
+                        x: e.clientX,
+                        y: e.clientY,
+                        r: 1,
+                        rd: 1,
+                        maxr: 50,
+                        age: 0
+                    });
+                    sx = e.clientX;
+                    sy = e.clientY;
+                }
+            })
+        }
+
+        for (const endEvent of ["mouseup", "touchend"]) {
+            canvas.addEventListener(endEvent, function (e) {
+                sx = null;
+                sy = null;
+            })
+        }
     </script>
 </body>
 
