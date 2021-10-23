@@ -21,7 +21,7 @@
 
 <body>
     <canvas id="canvas"></canvas>
-    <div id="version">v0.1</div>
+    <div id="version">v0.1.1</div>
     <script>
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
@@ -38,6 +38,8 @@
 
         ctx.strokeStyle = "lightblue";
         ctx.lineCap = "round";
+
+        ctx.lineWidth = 3;
 
         function drawCircles(timestamp) {
             if (!active) {
