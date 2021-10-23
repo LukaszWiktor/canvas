@@ -75,10 +75,30 @@
             })
         });
 
+        function getEventX(e) {
+            if (e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
+                var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+                var touch = evt.touches[0] || evt.changedTouches[0];
+                return touch.pageX;
+            } else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
+                return e.clientX;
+            }
+        }
+
+        function getEventY(e) {
+            if (e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
+                var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+                var touch = evt.touches[0] || evt.changedTouches[0];
+                return touch.pageY;
+            } else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
+                return e.clientY;
+            }
+        }
+
         for (const startEvent of ["mousedown", "touchstart"]) {
             canvas.addEventListener(startEvent, function (e) {
-                sx = e.clientX;
-                sy = e.clientY;
+                sx = getEventX(e);
+                sy = getEventY(e);
             });
         }
 
@@ -87,18 +107,20 @@
                 if (!sx || !sy) {
                     return;
                 }
-                const distance = Math.sqrt(Math.pow(sx - e.clientX, 2) + Math.pow(sy - e.clientY, 2));
+                const x = getEventX(e);
+                const y = getEventY(e);
+                const distance = Math.sqrt(Math.pow(sx - x, 2) + Math.pow(sy - y, 2));
                 if (distance > 25) {
                     circles.push({
-                        x: e.clientX,
-                        y: e.clientY,
+                        x: x,
+                        y: y,
                         r: 1,
                         rd: 1,
                         maxr: 50,
                         age: 0
                     });
-                    sx = e.clientX;
-                    sy = e.clientY;
+                    sx = x;
+                    sy = y;
                 }
             })
         }
